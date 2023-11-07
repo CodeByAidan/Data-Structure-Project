@@ -1,42 +1,43 @@
-name: Build macOS
+name: "Build and Test"
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ master ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ master ]
 
 env:
   BUILD_DIR: builds
 
 jobs:
-  build-macos:
-    runs-on: macos-latest
-
+  build-and-test:
+    strategy:
+      matrix:
+        os-version: [ ubuntu-latest, macos-latest, windows-latest ]
+    runs-on: ${{ matrix.os-version }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Debug - List files before compilation
-        run: |
-          ls -R
-          ls -R artifacts
-          ls -R build
-          ls -R .github/workflows
-        shell: /bin/bash
+      - name: Set up C/C++ compiler
+        id: setup_compiler
+        uses: actions/setup-cpp-compiler@v1
+        with:
+          compiler: gcc-latest
 
-      - name: Build and move artifacts
+      - name: Compile and build executable
         run: |
-          chmod +x .github/workflows/compile.sh
-          .github/workflows/compile.sh macos
-          mkdir -p build/macos
-          mv artifacts/* build/macos/
-        shell: /bin/bash -e {0}
+          gcc -o ${{ env.BUILD_DIR }}/largeintcalculator main.c
+          # On Windows, rename the executable to .exe
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/largeintcalculator.exe
+          fi
+        working-directory: ${{ github.workspace }}
 
-      - name: Debug - List files after compilation
+      - name: Move executable to appropriate directory
         run: |
-          ls -R
-          ls -R artifacts
-          ls -R build
-          ls -R .github/workflows
-        shell: /bin/bash
+          mkdir -p ${{ env.BUILD_DIR }}/windows ${{ env.BUILD_DIR }}/ubuntu ${{ env.BUILD_DIR }}/macos
+          mv ${{ env.BUILD_DIR }}/largeintcalculator* ${{ env.BUILD_DIR }}/windows/
+          mv ${{ env.BUILD_DIR }}/largeintcalculator* ${{ env.BUILD_DIR }}/ubuntu/
+          mv ${{ env.BUILD_DIR }}/largeintcalculator* ${{ env.BUILD_DIR }}/macos/
+        working-directory: ${{ github.workspace }}
