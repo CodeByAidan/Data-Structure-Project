@@ -33,8 +33,13 @@ jobs:
         if: runner.os != 'Windows'
         run: |
           mkdir -p ${{ env.BUILD_DIR }}/ubuntu ${{ env.BUILD_DIR }}/macos
-          mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/ubuntu/largeintcalculator
-          mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/macos/largeintcalculator
+          if [[ -e ${{ env.BUILD_DIR }}/largeintcalculator ]]; then
+            mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/ubuntu/largeintcalculator
+            mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/macos/largeintcalculator
+            echo "Executable moved successfully."
+          else
+            echo "Error: largeintcalculator binary not found in the expected location."
+          fi
         working-directory: ${{ github.workspace }}
 
       - name: Move executable to appropriate directory (Windows)
