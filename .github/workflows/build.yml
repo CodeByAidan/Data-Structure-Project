@@ -36,3 +36,12 @@ jobs:
           du -h ${{env.BUILD_DIR}}/ubuntu/largeintcalculator
           du -h ${{env.BUILD_DIR}}/windows/largeintcalculator.exe
           du -h ${{env.BUILD_DIR}}/macos/largeintcalculator
+
+      - name: Commit and push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "CodeByAidan"
+          git pull
+          git add .
+          git commit -m "Add build outputs" || exit 0
+          git push
