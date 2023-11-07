@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/largeintcalculator.dir/largeintcalculator.c.o"
   "CMakeFiles/largeintcalculator.dir/largeintcalculator.c.o.d"
-  "largeintcalculator"
-  "largeintcalculator.pdb"
+  "builds/macOS/Release/largeintcalculator"
+  "builds/macOS/Release/largeintcalculator.pdb"
 )
 
 # Per-language clean rules from dependency scanning.
