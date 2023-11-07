@@ -17,24 +17,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Debug - List files before compilation
+        run: |
+          ls -R
+          ls -R artifacts
+          ls -R build
+          ls -R .github/workflows
+        shell: /bin/bash
+
       - name: Build and move artifacts
         run: |
           chmod +x .github/workflows/compile.sh
           .github/workflows/compile.sh macos
           mkdir -p build/macos
           mv artifacts/* build/macos/
+        shell: /bin/bash -e {0}
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: macOS
-          path: build/macos
-
-      - name: Commit and push
+      - name: Debug - List files after compilation
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "CodeByAidan"
-          git pull
-          git add .
-          git commit -m "Add build outputs" || exit 0
-          git push
+          ls -R
+          ls -R artifacts
+          ls -R build
+          ls -R .github/workflows
+        shell: /bin/bash
