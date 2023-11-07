@@ -16,17 +16,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install MinGW
+      - name: Install MinGW for 64-bit Windows
         run: sudo apt-get update && sudo apt-get install -y mingw-w64
 
+      - name: Install MinGW for 32-bit Windows
+        run: sudo apt-get update && sudo apt-get install -y gcc-mingw-w64-i686
+
       - name: Create build directories
-        run: mkdir -p ${{env.BUILD_DIR}}/ubuntu ${{env.BUILD_DIR}}/windows ${{env.BUILD_DIR}}/macos
+        run: mkdir -p ${{env.BUILD_DIR}}/ubuntu ${{env.BUILD_DIR}}/windows/x64 ${{env.BUILD_DIR}}/windows/x86 ${{env.BUILD_DIR}}/macos
 
       - name: Compile on Ubuntu
         run: gcc -o ${{env.BUILD_DIR}}/ubuntu/largeintcalculator largeintcalculator.c
 
-      - name: Compile on Windows
-        run: x86_64-w64-mingw32-gcc -o ${{env.BUILD_DIR}}/windows/largeintcalculator.exe largeintcalculator.c
+      - name: Compile 64-bit Windows
+        run: x86_64-w64-mingw32-gcc -o ${{env.BUILD_DIR}}/windows/x64/largeintcalculator.exe largeintcalculator.c
+
+      - name: Compile 32-bit Windows
+        run: i686-w64-mingw32-gcc -o ${{env.BUILD_DIR}}/windows/x86/largeintcalculator.exe largeintcalculator.c
 
       - name: Compile on macOS
         run: gcc -o ${{env.BUILD_DIR}}/macos/largeintcalculator largeintcalculator.c
@@ -34,7 +40,8 @@ jobs:
       - name: Display file sizes
         run: |
           du -h ${{env.BUILD_DIR}}/ubuntu/largeintcalculator
-          du -h ${{env.BUILD_DIR}}/windows/largeintcalculator.exe
+          du -h ${{env.BUILD_DIR}}/windows/x64/largeintcalculator.exe
+          du -h ${{env.BUILD_DIR}}/windows/x86/largeintcalculator.exe
           du -h ${{env.BUILD_DIR}}/macos/largeintcalculator
 
       - name: Commit and push
