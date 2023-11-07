@@ -31,5 +31,5 @@ jobs:
           git config --local user.name "CodeByAidan"
           git pull
           git add .
-          git commit -m "Add build outputs" || exit 0
-          git push
+          git diff-index --quiet HEAD || git commit -m "Add build outputs" && git push
+        working-directory: ${{ github.workspace }}
