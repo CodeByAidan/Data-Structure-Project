@@ -30,7 +30,11 @@ jobs:
           gcc -o ${{ env.BUILD_DIR }}/largeintcalculator largeintcalculator.c
           # On Windows, rename the executable to .exe
           if [[ "$RUNNER_OS" == "Windows" ]]; then
-            mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/largeintcalculator.exe
+            mv ${{ env.BUILD_DIR }}/largeintcalculator.exe ${{ env.BUILD_DIR }}/windows
+          elif [[ "$RUNNER_OS" == "Linux" ]]; then
+            mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/ubuntu
+          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+            mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/macos
           fi
         working-directory: ${{ github.workspace }}
 
@@ -44,4 +48,13 @@ jobs:
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
             mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/macos
           fi
-          working-directory: ${{ github.workspace }}
+        run: |
+          mkdir -p ${{ env.BUILD_DIR }}/windows ${{ env.BUILD_DIR }}/ubuntu ${{ env.BUILD_DIR }}/macos
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            mv ${{ env.BUILD_DIR }}/largeintcalculator.exe ${{ env.BUILD_DIR }}/windows
+          elif [[ "$RUNNER_OS" == "Linux" ]]; then
+            mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/ubuntu
+          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+            mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/macos
+          fi
+        working-directory: ${{ github.workspace }}
