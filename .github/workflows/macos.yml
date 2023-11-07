@@ -21,7 +21,7 @@ jobs:
 
       - name: Set up C/C++ compiler
         id: setup_compiler
-        uses: actions/setup-cpp-compiler@v1
+        uses: rlalik/setup-cpp-compiler@master
         with:
           compiler: gcc-latest
 
