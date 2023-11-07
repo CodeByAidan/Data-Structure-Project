@@ -26,14 +26,20 @@ jobs:
           compiler: gcc-latest
 
       - name: Compile and build executable
+        run: gcc -o ${{ env.BUILD_DIR }}/largeintcalculator largeintcalculator.c
+        working-directory: ${{ github.workspace }}
+
+      - name: Move executable to appropriate directory (Linux/macOS)
+        if: runner.os != 'Windows'
         run: |
-          gcc -o ${{ env.BUILD_DIR }}/largeintcalculator largeintcalculator.c
-          # On Windows, rename the executable to .exe
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            mv ${{ env.BUILD_DIR }}/largeintcalculator.exe ${{ env.BUILD_DIR }}/windows/largeintcalculator.exe
-          elif [[ "$RUNNER_OS" == "Linux" ]]; then
-            mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/ubuntu/largeintcalculator
-          elif [[ "$RUNNER_OS" == "macOS" ]]; then
-            mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/macos/largeintcalculator
-          fi
+          mkdir -p ${{ env.BUILD_DIR }}/ubuntu ${{ env.BUILD_DIR }}/macos
+          mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/ubuntu/largeintcalculator
+          mv ${{ env.BUILD_DIR }}/largeintcalculator ${{ env.BUILD_DIR }}/macos/largeintcalculator
+        working-directory: ${{ github.workspace }}
+
+      - name: Move executable to appropriate directory (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          mkdir -p ${{ env.BUILD_DIR }}/windows
+          mv ${{ env.BUILD_DIR }}/largeintcalculator.exe ${{ env.BUILD_DIR }}/windows/largeintcalculator.exe
         working-directory: ${{ github.workspace }}
