@@ -1,0 +1,35 @@
+name: Build Large Int Calculator
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  BUILD_DIR: builds
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create build directories
+        run: mkdir -p ${{env.BUILD_DIR}}/ubuntu ${{env.BUILD_DIR}}/windows ${{env.BUILD_DIR}}/macos
+
+      - name: Compile on Ubuntu
+        run: gcc -o ${{env.BUILD_DIR}}/ubuntu/largeintcalculator largeintcalculator.c
+
+      - name: Compile on Windows
+        run: x86_64-w64-mingw32-gcc -o ${{env.BUILD_DIR}}/windows/largeintcalculator.exe largeintcalculator.c
+
+      - name: Compile on macOS
+        run: gcc -o ${{env.BUILD_DIR}}/macos/largeintcalculator largeintcalculator.c
+
+      - name: Display file sizes
+        run: |
+          du -h ${{env.BUILD_DIR}}/ubuntu/largeintcalculator
+          du -h ${{env.BUILD_DIR}}/windows/largeintcalculator.exe
+          du -h ${{env.BUILD_DIR}}/macos/largeintcalculator
