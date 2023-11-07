@@ -1,3 +1,0 @@
-/Users/runner/work/Data-Structure-Project/Data-Structure-Project/builds/macOS/CMakeFiles/largeintcalculator.dir
-/Users/runner/work/Data-Structure-Project/Data-Structure-Project/builds/macOS/CMakeFiles/edit_cache.dir
-/Users/runner/work/Data-Structure-Project/Data-Structure-Project/builds/macOS/CMakeFiles/rebuild_cache.dir

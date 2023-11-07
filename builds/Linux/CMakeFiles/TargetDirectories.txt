@@ -1,3 +1,0 @@
-/home/runner/work/Data-Structure-Project/Data-Structure-Project/builds/Linux/CMakeFiles/largeintcalculator.dir
-/home/runner/work/Data-Structure-Project/Data-Structure-Project/builds/Linux/CMakeFiles/edit_cache.dir
-/home/runner/work/Data-Structure-Project/Data-Structure-Project/builds/Linux/CMakeFiles/rebuild_cache.dir
