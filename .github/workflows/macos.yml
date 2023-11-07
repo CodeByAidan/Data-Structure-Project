@@ -1,0 +1,36 @@
+name: Build macOS
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and move artifacts
+        run: |
+          chmod +x .github/workflows/compile.sh
+          .github/workflows/compile.sh macos
+          mkdir -p build/macos
+          mv artifacts/* build/macos/
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: macOS
+          path: build/macos
+
+      - name: Commit and push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "CodeByAidan"
+          git pull
+          git add .
+          git commit -m "Add build outputs" || exit 0
+          git push
