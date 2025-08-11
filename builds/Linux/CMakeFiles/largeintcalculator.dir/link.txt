@@ -1,1 +1,1 @@
-/usr/bin/cc -O3 -DNDEBUG CMakeFiles/largeintcalculator.dir/largeintcalculator.c.o -o builds/Linux/Release/largeintcalculator 
+/usr/bin/cc -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/largeintcalculator.dir/link.d CMakeFiles/largeintcalculator.dir/largeintcalculator.c.o -o builds/Linux/Release/largeintcalculator
